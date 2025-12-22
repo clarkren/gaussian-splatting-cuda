@@ -19,7 +19,7 @@ namespace lfs::core::args {
         param::ConvertParameters params;
     };
     struct HelpMode {};
-    struct WarmupMode {};  // JIT compile PTX kernels and exit
+    struct WarmupMode {}; // JIT compile PTX kernels and exit
 
     using ParsedArgs = std::variant<TrainingMode, ConvertMode, HelpMode, WarmupMode>;
 

@@ -594,12 +594,14 @@ lfs::core::args::parse_args(const int argc, const char* const argv[]) {
             // Handle convert subcommand below
         } else {
             auto result = parse_args_and_params(argc, argv);
-            if (!result) return std::unexpected(result.error());
+            if (!result)
+                return std::unexpected(result.error());
             return TrainingMode{std::move(*result)};
         }
     } else {
         auto result = parse_args_and_params(argc, argv);
-        if (!result) return std::unexpected(result.error());
+        if (!result)
+            return std::unexpected(result.error());
         return TrainingMode{std::move(*result)};
     }
 

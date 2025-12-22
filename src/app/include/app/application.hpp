@@ -7,14 +7,14 @@
 #include <memory>
 
 namespace lfs::core::param {
-struct TrainingParameters;
+    struct TrainingParameters;
 }
 
 namespace lfs::app {
 
-class Application {
-public:
-    int run(std::unique_ptr<lfs::core::param::TrainingParameters> params);
-};
+    class Application {
+    public:
+        int run(std::unique_ptr<lfs::core::param::TrainingParameters> params);
+    };
 
 } // namespace lfs::app

@@ -30,5 +30,6 @@ int main(int argc, char* argv[]) {
             lfs::app::Application app;
             return app.run(std::move(mode.params));
         }
-    }, std::move(*result));
+    },
+                      std::move(*result));
 }

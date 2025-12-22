@@ -14,8 +14,8 @@
 #include <cuda_runtime.h>
 #include <fstream>
 #include <nvimgcodec.h>
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -27,49 +27,49 @@ namespace lfs::io {
         // Convert nvimgcodec status to string
         const char* nvimgcodec_status_to_string(nvimgcodecStatus_t status) {
             switch (status) {
-                case NVIMGCODEC_STATUS_SUCCESS: return "SUCCESS";
-                case NVIMGCODEC_STATUS_NOT_INITIALIZED: return "NOT_INITIALIZED";
-                case NVIMGCODEC_STATUS_INVALID_PARAMETER: return "INVALID_PARAMETER";
-                case NVIMGCODEC_STATUS_BAD_CODESTREAM: return "BAD_CODESTREAM";
-                case NVIMGCODEC_STATUS_CODESTREAM_UNSUPPORTED: return "CODESTREAM_UNSUPPORTED";
-                case NVIMGCODEC_STATUS_ALLOCATOR_FAILURE: return "ALLOCATOR_FAILURE";
-                case NVIMGCODEC_STATUS_EXECUTION_FAILED: return "EXECUTION_FAILED";
-                case NVIMGCODEC_STATUS_ARCH_MISMATCH: return "ARCH_MISMATCH";
-                case NVIMGCODEC_STATUS_INTERNAL_ERROR: return "INTERNAL_ERROR";
-                case NVIMGCODEC_STATUS_IMPLEMENTATION_UNSUPPORTED: return "IMPLEMENTATION_UNSUPPORTED";
-                case NVIMGCODEC_STATUS_MISSED_DEPENDENCIES: return "MISSED_DEPENDENCIES";
-                case NVIMGCODEC_STATUS_EXTENSION_NOT_INITIALIZED: return "EXTENSION_NOT_INITIALIZED";
-                case NVIMGCODEC_STATUS_EXTENSION_INVALID_PARAMETER: return "EXTENSION_INVALID_PARAMETER";
-                case NVIMGCODEC_STATUS_EXTENSION_BAD_CODE_STREAM: return "EXTENSION_BAD_CODE_STREAM";
-                case NVIMGCODEC_STATUS_EXTENSION_CODESTREAM_UNSUPPORTED: return "EXTENSION_CODESTREAM_UNSUPPORTED";
-                case NVIMGCODEC_STATUS_EXTENSION_ALLOCATOR_FAILURE: return "EXTENSION_ALLOCATOR_FAILURE";
-                case NVIMGCODEC_STATUS_EXTENSION_ARCH_MISMATCH: return "EXTENSION_ARCH_MISMATCH";
-                case NVIMGCODEC_STATUS_EXTENSION_INTERNAL_ERROR: return "EXTENSION_INTERNAL_ERROR";
-                case NVIMGCODEC_STATUS_EXTENSION_IMPLEMENTATION_NOT_SUPPORTED: return "EXTENSION_IMPLEMENTATION_NOT_SUPPORTED";
-                case NVIMGCODEC_STATUS_EXTENSION_INCOMPLETE_BITSTREAM: return "EXTENSION_INCOMPLETE_BITSTREAM";
-                case NVIMGCODEC_STATUS_EXTENSION_EXECUTION_FAILED: return "EXTENSION_EXECUTION_FAILED";
-                case NVIMGCODEC_STATUS_EXTENSION_CUDA_CALL_ERROR: return "EXTENSION_CUDA_CALL_ERROR";
-                default: return "UNKNOWN_STATUS";
+            case NVIMGCODEC_STATUS_SUCCESS: return "SUCCESS";
+            case NVIMGCODEC_STATUS_NOT_INITIALIZED: return "NOT_INITIALIZED";
+            case NVIMGCODEC_STATUS_INVALID_PARAMETER: return "INVALID_PARAMETER";
+            case NVIMGCODEC_STATUS_BAD_CODESTREAM: return "BAD_CODESTREAM";
+            case NVIMGCODEC_STATUS_CODESTREAM_UNSUPPORTED: return "CODESTREAM_UNSUPPORTED";
+            case NVIMGCODEC_STATUS_ALLOCATOR_FAILURE: return "ALLOCATOR_FAILURE";
+            case NVIMGCODEC_STATUS_EXECUTION_FAILED: return "EXECUTION_FAILED";
+            case NVIMGCODEC_STATUS_ARCH_MISMATCH: return "ARCH_MISMATCH";
+            case NVIMGCODEC_STATUS_INTERNAL_ERROR: return "INTERNAL_ERROR";
+            case NVIMGCODEC_STATUS_IMPLEMENTATION_UNSUPPORTED: return "IMPLEMENTATION_UNSUPPORTED";
+            case NVIMGCODEC_STATUS_MISSED_DEPENDENCIES: return "MISSED_DEPENDENCIES";
+            case NVIMGCODEC_STATUS_EXTENSION_NOT_INITIALIZED: return "EXTENSION_NOT_INITIALIZED";
+            case NVIMGCODEC_STATUS_EXTENSION_INVALID_PARAMETER: return "EXTENSION_INVALID_PARAMETER";
+            case NVIMGCODEC_STATUS_EXTENSION_BAD_CODE_STREAM: return "EXTENSION_BAD_CODE_STREAM";
+            case NVIMGCODEC_STATUS_EXTENSION_CODESTREAM_UNSUPPORTED: return "EXTENSION_CODESTREAM_UNSUPPORTED";
+            case NVIMGCODEC_STATUS_EXTENSION_ALLOCATOR_FAILURE: return "EXTENSION_ALLOCATOR_FAILURE";
+            case NVIMGCODEC_STATUS_EXTENSION_ARCH_MISMATCH: return "EXTENSION_ARCH_MISMATCH";
+            case NVIMGCODEC_STATUS_EXTENSION_INTERNAL_ERROR: return "EXTENSION_INTERNAL_ERROR";
+            case NVIMGCODEC_STATUS_EXTENSION_IMPLEMENTATION_NOT_SUPPORTED: return "EXTENSION_IMPLEMENTATION_NOT_SUPPORTED";
+            case NVIMGCODEC_STATUS_EXTENSION_INCOMPLETE_BITSTREAM: return "EXTENSION_INCOMPLETE_BITSTREAM";
+            case NVIMGCODEC_STATUS_EXTENSION_EXECUTION_FAILED: return "EXTENSION_EXECUTION_FAILED";
+            case NVIMGCODEC_STATUS_EXTENSION_CUDA_CALL_ERROR: return "EXTENSION_CUDA_CALL_ERROR";
+            default: return "UNKNOWN_STATUS";
             }
         }
 
         // Convert processing status to string
         const char* processing_status_to_string(nvimgcodecProcessingStatus_t status) {
             switch (status) {
-                case NVIMGCODEC_PROCESSING_STATUS_SUCCESS: return "SUCCESS";
-                case NVIMGCODEC_PROCESSING_STATUS_FAIL: return "FAIL";
-                case NVIMGCODEC_PROCESSING_STATUS_IMAGE_CORRUPTED: return "IMAGE_CORRUPTED";
-                case NVIMGCODEC_PROCESSING_STATUS_CODEC_UNSUPPORTED: return "CODEC_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_BACKEND_UNSUPPORTED: return "BACKEND_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_CODESTREAM_UNSUPPORTED: return "CODESTREAM_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_ENCODING_UNSUPPORTED: return "ENCODING_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_RESOLUTION_UNSUPPORTED: return "RESOLUTION_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_SAMPLING_UNSUPPORTED: return "SAMPLING_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_COLOR_SPEC_UNSUPPORTED: return "COLOR_SPEC_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_ORIENTATION_UNSUPPORTED: return "ORIENTATION_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_ROI_UNSUPPORTED: return "ROI_UNSUPPORTED";
-                case NVIMGCODEC_PROCESSING_STATUS_UNKNOWN: return "UNKNOWN";
-                default: return "UNRECOGNIZED_STATUS";
+            case NVIMGCODEC_PROCESSING_STATUS_SUCCESS: return "SUCCESS";
+            case NVIMGCODEC_PROCESSING_STATUS_FAIL: return "FAIL";
+            case NVIMGCODEC_PROCESSING_STATUS_IMAGE_CORRUPTED: return "IMAGE_CORRUPTED";
+            case NVIMGCODEC_PROCESSING_STATUS_CODEC_UNSUPPORTED: return "CODEC_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_BACKEND_UNSUPPORTED: return "BACKEND_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_CODESTREAM_UNSUPPORTED: return "CODESTREAM_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_ENCODING_UNSUPPORTED: return "ENCODING_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_RESOLUTION_UNSUPPORTED: return "RESOLUTION_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_SAMPLING_UNSUPPORTED: return "SAMPLING_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_COLOR_SPEC_UNSUPPORTED: return "COLOR_SPEC_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_ORIENTATION_UNSUPPORTED: return "ORIENTATION_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_ROI_UNSUPPORTED: return "ROI_UNSUPPORTED";
+            case NVIMGCODEC_PROCESSING_STATUS_UNKNOWN: return "UNKNOWN";
+            default: return "UNRECOGNIZED_STATUS";
             }
         }
 
@@ -80,7 +80,7 @@ namespace lfs::io {
 
             if (err != cudaSuccess) {
                 LOG_ERROR("[nvImageCodec Diagnostics] cudaGetDeviceCount failed: {} ({})",
-                    cudaGetErrorString(err), static_cast<int>(err));
+                          cudaGetErrorString(err), static_cast<int>(err));
                 return;
             }
 
@@ -90,20 +90,20 @@ namespace lfs::io {
                 cudaDeviceProp prop;
                 if (cudaGetDeviceProperties(&prop, i) == cudaSuccess) {
                     LOG_INFO("[nvImageCodec Diagnostics] GPU {}: {} (SM {}.{}, {} MB, compute capability {}.{})",
-                        i, prop.name, prop.major, prop.minor,
-                        static_cast<int>(prop.totalGlobalMem / (1024 * 1024)),
-                        prop.major, prop.minor);
+                             i, prop.name, prop.major, prop.minor,
+                             static_cast<int>(prop.totalGlobalMem / (1024 * 1024)),
+                             prop.major, prop.minor);
 
                     // Log NVJPEG hardware decode capability (SM 3.0+ required, SM 6.0+ for HW decode)
                     if (prop.major < 3) {
                         LOG_WARN("[nvImageCodec Diagnostics] GPU {} compute capability {}.{} is below minimum (3.0) for nvJPEG",
-                            i, prop.major, prop.minor);
+                                 i, prop.major, prop.minor);
                     } else if (prop.major < 6) {
                         LOG_INFO("[nvImageCodec Diagnostics] GPU {} compute capability {}.{} - nvJPEG will use hybrid/CPU decoding (HW decode requires 6.0+)",
-                            i, prop.major, prop.minor);
+                                 i, prop.major, prop.minor);
                     } else {
                         LOG_INFO("[nvImageCodec Diagnostics] GPU {} compute capability {}.{} - nvJPEG hardware decode should be available",
-                            i, prop.major, prop.minor);
+                                 i, prop.major, prop.minor);
                     }
                 }
             }
@@ -112,14 +112,14 @@ namespace lfs::io {
             int driver_version = 0;
             if (cudaDriverGetVersion(&driver_version) == cudaSuccess) {
                 LOG_INFO("[nvImageCodec Diagnostics] CUDA driver version: {}.{}",
-                    driver_version / 1000, (driver_version % 1000) / 10);
+                         driver_version / 1000, (driver_version % 1000) / 10);
             }
 
             // Log CUDA runtime version
             int runtime_version = 0;
             if (cudaRuntimeGetVersion(&runtime_version) == cudaSuccess) {
                 LOG_INFO("[nvImageCodec Diagnostics] CUDA runtime version: {}.{}",
-                    runtime_version / 1000, (runtime_version % 1000) / 10);
+                         runtime_version / 1000, (runtime_version % 1000) / 10);
             }
         }
 
@@ -216,7 +216,7 @@ namespace lfs::io {
             cudaError_t err = cudaGetDeviceCount(&device_count);
             if (err != cudaSuccess || device_count == 0) {
                 LOG_ERROR("[nvImageCodec Diagnostics] CUDA not available: {} (device_count={})",
-                    cudaGetErrorString(err), device_count);
+                          cudaGetErrorString(err), device_count);
                 LOG_INFO("[nvImageCodec Diagnostics] === nvImageCodec UNAVAILABLE (no CUDA) ===");
                 return false;
             }
@@ -258,7 +258,7 @@ namespace lfs::io {
                 test_instance = nullptr;
             } else {
                 LOG_ERROR("[nvImageCodec Diagnostics] Instance creation with BUILTIN modules FAILED: {} ({})",
-                    nvimgcodec_status_to_string(status), static_cast<int>(status));
+                          nvimgcodec_status_to_string(status), static_cast<int>(status));
             }
 
             // Now try WITH extension modules
@@ -269,12 +269,12 @@ namespace lfs::io {
                 status = nvimgcodecInstanceCreate(&test_instance, &create_info);
                 if (status == NVIMGCODEC_STATUS_SUCCESS && test_instance) {
                     LOG_INFO("[nvImageCodec Diagnostics] Instance creation with EXTENSION modules ({}): SUCCESS",
-                        extensions_path_str);
+                             extensions_path_str);
                     nvimgcodecInstanceDestroy(test_instance);
                     test_instance = nullptr;
                 } else {
                     LOG_ERROR("[nvImageCodec Diagnostics] Instance creation with EXTENSION modules FAILED: {} ({})",
-                        nvimgcodec_status_to_string(status), static_cast<int>(status));
+                              nvimgcodec_status_to_string(status), static_cast<int>(status));
                 }
             }
 
@@ -290,15 +290,15 @@ namespace lfs::io {
                     NVIMGCODEC_STRUCTURE_TYPE_EXECUTION_PARAMS,
                     sizeof(nvimgcodecExecutionParams_t),
                     nullptr,
-                    nullptr,  // device_allocator
-                    nullptr,  // pinned_allocator
-                    0,        // max_num_cpu_threads
-                    nullptr,  // executor
-                    0,        // device_id
-                    0,        // pre_init
-                    0,        // skip_pre_sync
-                    0,        // num_backends
-                    nullptr   // backends
+                    nullptr, // device_allocator
+                    nullptr, // pinned_allocator
+                    0,       // max_num_cpu_threads
+                    nullptr, // executor
+                    0,       // device_id
+                    0,       // pre_init
+                    0,       // skip_pre_sync
+                    0,       // num_backends
+                    nullptr  // backends
                 };
 
                 auto decoder_status = nvimgcodecDecoderCreate(test_instance, &test_decoder, &exec_params, nullptr);
@@ -307,7 +307,7 @@ namespace lfs::io {
                     nvimgcodecDecoderDestroy(test_decoder);
                 } else {
                     LOG_WARN("[nvImageCodec Diagnostics] Decoder creation FAILED: {} - decode may not work",
-                        nvimgcodec_status_to_string(decoder_status));
+                             nvimgcodec_status_to_string(decoder_status));
                 }
 
                 nvimgcodecInstanceDestroy(test_instance);
@@ -374,7 +374,7 @@ namespace lfs::io {
         : impl_(std::make_unique<Impl>()) {
 
         LOG_INFO("[NvCodecImageLoader] Initializing with device_id={}, pool_size={}, fallback={}",
-            options.device_id, options.decoder_pool_size, options.enable_fallback);
+                 options.device_id, options.decoder_pool_size, options.enable_fallback);
 
         impl_->device_id = options.device_id;
         impl_->fallback_enabled = options.enable_fallback;
@@ -421,25 +421,25 @@ namespace lfs::io {
             NVIMGCODEC_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             sizeof(nvimgcodecInstanceCreateInfo_t),
             nullptr,
-            1,                    // load_builtin_modules
-            1,                    // load_extension_modules
-            extensions_path_ptr,  // extension_modules_path - set for portable builds
-            0,                    // create_debug_messenger
-            nullptr,              // debug_messenger_desc
-            0,                    // message_severity
-            0                     // message_category
+            1,                   // load_builtin_modules
+            1,                   // load_extension_modules
+            extensions_path_ptr, // extension_modules_path - set for portable builds
+            0,                   // create_debug_messenger
+            nullptr,             // debug_messenger_desc
+            0,                   // message_severity
+            0                    // message_category
         };
 
         LOG_DEBUG("[NvCodecImageLoader] Creating nvImageCodec instance (builtin=1, extensions={}, path={})",
-            create_info.load_extension_modules,
-            extensions_path_ptr ? extensions_path_ptr : "(null)");
+                  create_info.load_extension_modules,
+                  extensions_path_ptr ? extensions_path_ptr : "(null)");
 
         auto status = nvimgcodecInstanceCreate(&impl_->instance, &create_info);
         if (status != NVIMGCODEC_STATUS_SUCCESS) {
             LOG_ERROR("[NvCodecImageLoader] nvimgcodecInstanceCreate failed: {} ({})",
-                nvimgcodec_status_to_string(status), static_cast<int>(status));
+                      nvimgcodec_status_to_string(status), static_cast<int>(status));
             throw std::runtime_error("Failed to create nvImageCodec instance: " +
-                std::string(nvimgcodec_status_to_string(status)));
+                                     std::string(nvimgcodec_status_to_string(status)));
         }
 
         LOG_INFO("[NvCodecImageLoader] nvImageCodec instance created successfully");
@@ -467,20 +467,20 @@ namespace lfs::io {
         };
 
         LOG_DEBUG("[NvCodecImageLoader] Creating {} decoders (device_id={}, cpu_threads={})",
-            pool_size, options.device_id, options.max_num_cpu_threads);
+                  pool_size, options.device_id, options.max_num_cpu_threads);
 
         for (size_t i = 0; i < pool_size; ++i) {
             status = nvimgcodecDecoderCreate(impl_->instance, &impl_->decoder_pool[i], &exec_params, nullptr);
             if (status != NVIMGCODEC_STATUS_SUCCESS) {
                 LOG_ERROR("[NvCodecImageLoader] nvimgcodecDecoderCreate({}) failed: {} ({})",
-                    i, nvimgcodec_status_to_string(status), static_cast<int>(status));
+                          i, nvimgcodec_status_to_string(status), static_cast<int>(status));
                 throw std::runtime_error("Failed to create nvImageCodec decoder " + std::to_string(i) +
-                    ": " + std::string(nvimgcodec_status_to_string(status)));
+                                         ": " + std::string(nvimgcodec_status_to_string(status)));
             }
         }
 
         LOG_INFO("[NvCodecImageLoader] Initialized with {} decoders (GPU backend preferred, fallback={})",
-            pool_size, options.enable_fallback);
+                 pool_size, options.enable_fallback);
     }
 
     NvCodecImageLoader::~NvCodecImageLoader() = default;
@@ -686,7 +686,7 @@ namespace lfs::io {
 
             // Log comprehensive decode failure information
             LOG_ERROR("[NvCodecImageLoader] Decode FAILED with status: {} ({})",
-                status_str, static_cast<int>(decode_status));
+                      status_str, static_cast<int>(decode_status));
 
             // Provide context-specific help for common issues
             if (decode_status == NVIMGCODEC_PROCESSING_STATUS_CODEC_UNSUPPORTED) {
@@ -696,20 +696,20 @@ namespace lfs::io {
                 LOG_ERROR("[NvCodecImageLoader]   2. Extension DLLs have missing dependencies");
                 LOG_ERROR("[NvCodecImageLoader]   3. GPU doesn't support required features");
                 LOG_ERROR("[NvCodecImageLoader]   Image info: {}x{}, {} bytes compressed",
-                    src_width, src_height, jpeg_data.size());
+                          src_width, src_height, jpeg_data.size());
             } else if (decode_status == NVIMGCODEC_PROCESSING_STATUS_BACKEND_UNSUPPORTED) {
                 LOG_ERROR("[NvCodecImageLoader] BACKEND_UNSUPPORTED: Backend cannot handle this image format");
                 LOG_ERROR("[NvCodecImageLoader]   Check if image is valid JPEG (magic: 0x{:02X}{:02X})",
-                    jpeg_data.size() >= 2 ? jpeg_data[0] : 0,
-                    jpeg_data.size() >= 2 ? jpeg_data[1] : 0);
+                          jpeg_data.size() >= 2 ? jpeg_data[0] : 0,
+                          jpeg_data.size() >= 2 ? jpeg_data[1] : 0);
             } else if (decode_status == NVIMGCODEC_PROCESSING_STATUS_IMAGE_CORRUPTED) {
                 LOG_ERROR("[NvCodecImageLoader] IMAGE_CORRUPTED: Image data appears to be corrupt");
                 LOG_ERROR("[NvCodecImageLoader]   Size: {} bytes, first bytes: {:02X} {:02X} {:02X} {:02X}",
-                    jpeg_data.size(),
-                    jpeg_data.size() >= 1 ? jpeg_data[0] : 0,
-                    jpeg_data.size() >= 2 ? jpeg_data[1] : 0,
-                    jpeg_data.size() >= 3 ? jpeg_data[2] : 0,
-                    jpeg_data.size() >= 4 ? jpeg_data[3] : 0);
+                          jpeg_data.size(),
+                          jpeg_data.size() >= 1 ? jpeg_data[0] : 0,
+                          jpeg_data.size() >= 2 ? jpeg_data[1] : 0,
+                          jpeg_data.size() >= 3 ? jpeg_data[2] : 0,
+                          jpeg_data.size() >= 4 ? jpeg_data[3] : 0);
             } else if (decode_status == NVIMGCODEC_PROCESSING_STATUS_CODESTREAM_UNSUPPORTED) {
                 LOG_ERROR("[NvCodecImageLoader] CODESTREAM_UNSUPPORTED: Image encoding not supported");
                 LOG_ERROR("[NvCodecImageLoader]   The JPEG may use an unsupported color space or encoding mode");

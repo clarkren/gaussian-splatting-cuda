@@ -26,8 +26,8 @@ namespace lfs::vis {
     }
 
     WindowManager::WindowManager(const std::string& title, const int width, const int height,
-                                  const int monitor_x, const int monitor_y,
-                                  const int monitor_width, const int monitor_height)
+                                 const int monitor_x, const int monitor_y,
+                                 const int monitor_width, const int monitor_height)
         : title_(title),
           window_size_(width, height),
           framebuffer_size_(width, height),

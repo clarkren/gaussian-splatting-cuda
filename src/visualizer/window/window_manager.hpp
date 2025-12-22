@@ -29,7 +29,7 @@ namespace lfs::vis {
         bool init();
 
         // Window operations
-        void showWindow();  // Show window (call after initialization complete)
+        void showWindow(); // Show window (call after initialization complete)
         void updateWindowSize();
         void swapBuffers();
         void pollEvents();

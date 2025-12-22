@@ -406,10 +406,10 @@ namespace fast_lfs::rasterization {
         constexpr float CENTER_Y = IMG_HEIGHT / 2.0f;
 
         // Allocate all buffers in one block for efficiency
-        constexpr size_t INPUT_SIZE = NUM_GAUSSIANS * (3 + 3 + 4 + 1 + 3) * sizeof(float)  // means, scales, rotations, opacities, sh0
-                                    + 16 * sizeof(float)  // w2c
-                                    + 3 * sizeof(float)   // cam_pos
-                                    + IMG_WIDTH * IMG_HEIGHT * 4 * sizeof(float);  // image + alpha
+        constexpr size_t INPUT_SIZE = NUM_GAUSSIANS * (3 + 3 + 4 + 1 + 3) * sizeof(float) // means, scales, rotations, opacities, sh0
+                                      + 16 * sizeof(float)                                // w2c
+                                      + 3 * sizeof(float)                                 // cam_pos
+                                      + IMG_WIDTH * IMG_HEIGHT * 4 * sizeof(float);       // image + alpha
 
         char* buffer;
         cudaMalloc(&buffer, INPUT_SIZE);
@@ -428,12 +428,12 @@ namespace fast_lfs::rasterization {
         // Initialize rotations to identity quaternion
         std::vector<float> rot_data(NUM_GAUSSIANS * 4);
         for (int i = 0; i < NUM_GAUSSIANS; ++i) {
-            rot_data[i * 4] = 1.0f;  // w=1, x=y=z=0
+            rot_data[i * 4] = 1.0f; // w=1, x=y=z=0
         }
         cudaMemcpy(rotations, rot_data.data(), rot_data.size() * sizeof(float), cudaMemcpyHostToDevice);
 
         // Initialize w2c to identity and camera position
-        const float identity[16] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
+        const float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
         const float cam[3] = {0.0f, 0.0f, 5.0f};
         cudaMemcpy(w2c, identity, sizeof(identity), cudaMemcpyHostToDevice);
         cudaMemcpy(cam_pos, cam, sizeof(cam), cudaMemcpyHostToDevice);
@@ -449,8 +449,7 @@ namespace fast_lfs::rasterization {
 
         if (ctx.success) {
             // Allocate gradient buffers
-            constexpr size_t GRAD_SIZE = IMG_WIDTH * IMG_HEIGHT * 4 * sizeof(float)
-                                       + NUM_GAUSSIANS * (3 + 3 + 4 + 1 + 3) * sizeof(float);
+            constexpr size_t GRAD_SIZE = IMG_WIDTH * IMG_HEIGHT * 4 * sizeof(float) + NUM_GAUSSIANS * (3 + 3 + 4 + 1 + 3) * sizeof(float);
             char* grad_buffer;
             cudaMalloc(&grad_buffer, GRAD_SIZE);
             cudaMemset(grad_buffer, 0, GRAD_SIZE);

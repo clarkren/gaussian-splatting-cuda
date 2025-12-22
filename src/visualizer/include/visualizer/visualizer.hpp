@@ -22,7 +22,7 @@ namespace lfs::vis {
         bool antialiasing = false;
         bool enable_cuda_interop = true;
         bool gut = false;
-        int monitor_x = 0;      // Monitor hint for window placement
+        int monitor_x = 0; // Monitor hint for window placement
         int monitor_y = 0;
         int monitor_width = 0;
         int monitor_height = 0;

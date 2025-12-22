@@ -643,7 +643,7 @@ namespace lfs::io {
 
         if (!std::filesystem::exists(images_path)) {
             return make_error(ErrorCode::PATH_NOT_FOUND,
-                "Images folder does not exist", images_path);
+                              "Images folder does not exist", images_path);
         }
 
         std::vector<std::shared_ptr<Camera>> cameras;
@@ -659,8 +659,8 @@ namespace lfs::io {
             auto it = cam_map.find(img.camera_id);
             if (it == cam_map.end()) {
                 return make_error(ErrorCode::CORRUPTED_DATA,
-                    std::format("Camera ID {} not found for image '{}'", img.camera_id, img.name),
-                    images_path / img.name);
+                                  std::format("Camera ID {} not found for image '{}'", img.camera_id, img.name),
+                                  images_path / img.name);
             }
 
             const auto& cam_data = it->second;
@@ -697,8 +697,8 @@ namespace lfs::io {
             auto model_it = camera_model_ids.find(cam_data.model_id);
             if (model_it == camera_model_ids.end()) {
                 return make_error(ErrorCode::UNSUPPORTED_FORMAT,
-                    std::format("Invalid camera model ID {} for image '{}'", cam_data.model_id, img.name),
-                    images_path / img.name);
+                                  std::format("Invalid camera model ID {} for image '{}'", cam_data.model_id, img.name),
+                                  images_path / img.name);
             }
 
             CAMERA_MODEL model = model_it->second.first;
@@ -808,13 +808,13 @@ namespace lfs::io {
 
             case CAMERA_MODEL::FOV:
                 return make_error(ErrorCode::UNSUPPORTED_FORMAT,
-                    std::format("FOV camera model not supported for image '{}'", img.name),
-                    images_path / img.name);
+                                  std::format("FOV camera model not supported for image '{}'", img.name),
+                                  images_path / img.name);
 
             default:
                 return make_error(ErrorCode::UNSUPPORTED_FORMAT,
-                    std::format("Unsupported camera model for image '{}'", img.name),
-                    images_path / img.name);
+                                  std::format("Unsupported camera model for image '{}'", img.name),
+                                  images_path / img.name);
             }
 
             std::filesystem::path mask_path = find_mask_path(base_path, img.name);
@@ -825,10 +825,10 @@ namespace lfs::io {
                 auto [mask_w, mask_h, mask_c] = lfs::core::get_image_info(mask_path);
                 if (img_w != mask_w || img_h != mask_h) {
                     return make_error(ErrorCode::MASK_SIZE_MISMATCH,
-                        std::format("Mask '{}' is {}x{} but image '{}' is {}x{}",
-                            mask_path.filename().string(), mask_w, mask_h,
-                            img.name, img_w, img_h),
-                        mask_path);
+                                      std::format("Mask '{}' is {}x{} but image '{}' is {}x{}",
+                                                  mask_path.filename().string(), mask_w, mask_h,
+                                                  img.name, img_w, img_h),
+                                      mask_path);
                 }
             }
 

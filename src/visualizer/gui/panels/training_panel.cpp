@@ -17,8 +17,8 @@
 #include <cstring>
 #include <deque>
 #include <filesystem>
-#include <imgui.h>
 #include <set>
+#include <imgui.h>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -40,7 +40,8 @@ namespace lfs::vis::gui::panels {
         }
 
         void apply_step_scaling(lfs::core::param::OptimizationParameters& opt, const float scaler) {
-            if (scaler <= 0.0f) return;
+            if (scaler <= 0.0f)
+                return;
             const auto scale = [scaler](const size_t v) {
                 return static_cast<size_t>(static_cast<float>(v) * scaler);
             };
@@ -53,7 +54,7 @@ namespace lfs::vis::gui::panels {
             scale_steps_vector(opt.eval_steps, scaler);
             scale_steps_vector(opt.save_steps, scaler);
         }
-    }
+    } // namespace
 
     struct IterationRateTracker {
         struct Sample {

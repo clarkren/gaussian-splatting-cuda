@@ -69,7 +69,8 @@ namespace lfs::vis::gui {
             if (widgets::ColoredButton("Cancel", widgets::ButtonStyle::Secondary, {BUTTON_WIDTH, 0}) ||
                 ImGui::IsKeyPressed(ImGuiKey_Escape)) {
                 open_ = false;
-                if (on_cancel_) on_cancel_();
+                if (on_cancel_)
+                    on_cancel_();
                 ImGui::CloseCurrentPopup();
             }
 
@@ -78,7 +79,8 @@ namespace lfs::vis::gui {
             if (widgets::ColoredButton("Exit", widgets::ButtonStyle::Error, {BUTTON_WIDTH, 0}) ||
                 ImGui::IsKeyPressed(ImGuiKey_Enter)) {
                 open_ = false;
-                if (on_confirm_) on_confirm_();
+                if (on_confirm_)
+                    on_confirm_();
                 ImGui::CloseCurrentPopup();
             }
 

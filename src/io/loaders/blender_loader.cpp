@@ -181,10 +181,10 @@ namespace lfs::io {
                         auto [mask_w, mask_h, mask_c] = lfs::core::get_image_info(mask_path);
                         if (img_w != mask_w || img_h != mask_h) {
                             return make_error(ErrorCode::MASK_SIZE_MISMATCH,
-                                std::format("Mask '{}' is {}x{} but image '{}' is {}x{}",
-                                    mask_path.filename().string(), mask_w, mask_h,
-                                    info._image_name, img_w, img_h),
-                                mask_path);
+                                              std::format("Mask '{}' is {}x{} but image '{}' is {}x{}",
+                                                          mask_path.filename().string(), mask_w, mask_h,
+                                                          info._image_name, img_w, img_h),
+                                              mask_path);
                         }
                     }
 

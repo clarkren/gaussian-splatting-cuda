@@ -641,37 +641,37 @@ namespace lfs::io {
         // Check magic bytes to determine actual file format
         const bool has_jpeg_magic = jpeg_bytes.size() >= 2 && jpeg_bytes[0] == 0xFF && jpeg_bytes[1] == 0xD8;
         const bool has_png_magic = jpeg_bytes.size() >= 8 &&
-            jpeg_bytes[0] == 0x89 && jpeg_bytes[1] == 0x50 && jpeg_bytes[2] == 0x4E && jpeg_bytes[3] == 0x47;
+                                   jpeg_bytes[0] == 0x89 && jpeg_bytes[1] == 0x50 && jpeg_bytes[2] == 0x4E && jpeg_bytes[3] == 0x47;
         const bool has_webp_magic = jpeg_bytes.size() >= 12 &&
-            jpeg_bytes[0] == 0x52 && jpeg_bytes[1] == 0x49 && jpeg_bytes[2] == 0x46 && jpeg_bytes[3] == 0x46 &&
-            jpeg_bytes[8] == 0x57 && jpeg_bytes[9] == 0x45 && jpeg_bytes[10] == 0x42 && jpeg_bytes[11] == 0x50;
+                                    jpeg_bytes[0] == 0x52 && jpeg_bytes[1] == 0x49 && jpeg_bytes[2] == 0x46 && jpeg_bytes[3] == 0x46 &&
+                                    jpeg_bytes[8] == 0x57 && jpeg_bytes[9] == 0x45 && jpeg_bytes[10] == 0x42 && jpeg_bytes[11] == 0x50;
 
         // Get file extension for comparison
         std::string file_ext = path.extension().string();
         std::transform(file_ext.begin(), file_ext.end(), file_ext.begin(), ::tolower);
 
         // Determine actual format from magic bytes
-        const char* detected_format = has_jpeg_magic ? "JPEG" :
-                                      has_png_magic ? "PNG" :
-                                      has_webp_magic ? "WebP" : "Unknown";
+        const char* detected_format = has_jpeg_magic ? "JPEG" : has_png_magic ? "PNG"
+                                                            : has_webp_magic  ? "WebP"
+                                                                              : "Unknown";
 
         LOG_DEBUG("[CacheLoader] File '{}': extension='{}', detected_format={}, magic_bytes=0x{:02X}{:02X}{:02X}{:02X}, size={} bytes",
-            path.filename().string(),
-            file_ext,
-            detected_format,
-            jpeg_bytes.size() >= 1 ? jpeg_bytes[0] : 0,
-            jpeg_bytes.size() >= 2 ? jpeg_bytes[1] : 0,
-            jpeg_bytes.size() >= 3 ? jpeg_bytes[2] : 0,
-            jpeg_bytes.size() >= 4 ? jpeg_bytes[3] : 0,
-            jpeg_bytes.size());
+                  path.filename().string(),
+                  file_ext,
+                  detected_format,
+                  jpeg_bytes.size() >= 1 ? jpeg_bytes[0] : 0,
+                  jpeg_bytes.size() >= 2 ? jpeg_bytes[1] : 0,
+                  jpeg_bytes.size() >= 3 ? jpeg_bytes[2] : 0,
+                  jpeg_bytes.size() >= 4 ? jpeg_bytes[3] : 0,
+                  jpeg_bytes.size());
 
         // Warn if extension doesn't match detected format
         if ((file_ext == ".jpg" || file_ext == ".jpeg") && !has_jpeg_magic) {
             LOG_WARN("[CacheLoader] File '{}' has .jpg/.jpeg extension but is NOT a JPEG (magic: 0x{:02X}{:02X}, detected: {})",
-                path.filename().string(),
-                jpeg_bytes.size() >= 1 ? jpeg_bytes[0] : 0,
-                jpeg_bytes.size() >= 2 ? jpeg_bytes[1] : 0,
-                detected_format);
+                     path.filename().string(),
+                     jpeg_bytes.size() >= 1 ? jpeg_bytes[0] : 0,
+                     jpeg_bytes.size() >= 2 ? jpeg_bytes[1] : 0,
+                     detected_format);
         }
 
         if (has_jpeg_magic) {
@@ -681,12 +681,12 @@ namespace lfs::io {
             } catch (const std::exception& e) {
                 // Log comprehensive warning with file context
                 LOG_WARN("[CacheLoader] nvImageCodec decode failed for '{}': {}",
-                    path.filename().string(), e.what());
+                         path.filename().string(), e.what());
                 LOG_WARN("[CacheLoader] File info: extension='{}', detected_format={}, size={} bytes",
-                    file_ext, detected_format, jpeg_bytes.size());
+                         file_ext, detected_format, jpeg_bytes.size());
                 LOG_WARN("[CacheLoader] Using CPU fallback decoder (slower but compatible)");
                 LOG_DEBUG("[CacheLoader] Full path: {}, resize_factor={}, max_width={}",
-                    path.string(), params.resize_factor, params.max_width);
+                          path.string(), params.resize_factor, params.max_width);
 
                 // Note: The detailed error logging is already done in NvCodecImageLoader
                 // This just adds context about which file failed
@@ -696,7 +696,7 @@ namespace lfs::io {
 
         // Not a JPEG - use CPU fallback
         LOG_DEBUG("[CacheLoader] File '{}' is not JPEG (detected: {}), using CPU decoder",
-            path.filename().string(), detected_format);
+                  path.filename().string(), detected_format);
         return decode_with_cpu_fallback(path, params);
     }
 

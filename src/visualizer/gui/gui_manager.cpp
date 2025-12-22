@@ -919,8 +919,10 @@ namespace lfs::vis::gui {
             save_directory_popup_->render(viewport_pos_, viewport_size_);
         }
 
-        if (notification_popup_) notification_popup_->render();
-        if (exit_confirmation_popup_) exit_confirmation_popup_->render();
+        if (notification_popup_)
+            notification_popup_->render();
+        if (exit_confirmation_popup_)
+            exit_confirmation_popup_->render();
 
         // End frame
         ImGui::Render();
@@ -2487,7 +2489,8 @@ namespace lfs::vis::gui {
     }
 
     void GuiManager::requestExitConfirmation() {
-        if (!exit_confirmation_popup_) return;
+        if (!exit_confirmation_popup_)
+            return;
         exit_confirmation_popup_->show([this]() {
             force_exit_ = true;
             glfwSetWindowShouldClose(viewer_->getWindow(), true);

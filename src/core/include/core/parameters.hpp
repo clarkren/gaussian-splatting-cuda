@@ -49,6 +49,7 @@ namespace lfs::core {
             bool enable_save_eval_images = true;              // Save during evaluation images
             bool headless = false;                            // Disable visualization during training
             bool no_splash = false;                           // Skip splash screen on startup
+            bool no_interop = false;                          // Disable CUDA-GL interop (use CPU fallback)
             std::string strategy = "mcmc";                    // Optimization strategy: mcmc, default.
 
             // Mask parameters

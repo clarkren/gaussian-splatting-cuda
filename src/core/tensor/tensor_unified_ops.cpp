@@ -818,14 +818,22 @@ namespace lfs::core {
 
             // Handle Bool dtype for Any/All operations
             if (input->dtype_ == DataType::Bool && (op == ReduceOp::Any || op == ReduceOp::All)) {
-                const unsigned char* src = static_cast<const unsigned char*>(input->data_ptr());
+                // For non-contiguous tensors, make contiguous first for correct linear access
+                const Tensor* src_tensor = input;
+                Tensor contiguous_copy;
+                if (!input->is_contiguous_) {
+                    contiguous_copy = input->contiguous();
+                    src_tensor = &contiguous_copy;
+                }
+
+                const unsigned char* src = static_cast<const unsigned char*>(src_tensor->data_ptr());
                 unsigned char* dst = static_cast<unsigned char*>(result.data_ptr());
 
                 // Full reduction to scalar
                 if (axes.size() == input->shape_.rank()) {
                     if (op == ReduceOp::Any) {
                         bool any_true = false;
-                        for (size_t i = 0; i < input->numel(); ++i) {
+                        for (size_t i = 0; i < src_tensor->numel(); ++i) {
                             if (src[i]) {
                                 any_true = true;
                                 break;
@@ -834,7 +842,7 @@ namespace lfs::core {
                         dst[0] = any_true ? 1 : 0;
                     } else { // ReduceOp::All
                         bool all_true = true;
-                        for (size_t i = 0; i < input->numel(); ++i) {
+                        for (size_t i = 0; i < src_tensor->numel(); ++i) {
                             if (!src[i]) {
                                 all_true = false;
                                 break;
@@ -855,10 +863,7 @@ namespace lfs::core {
                     }
                 }
 
-                // Calculate input strides
-                auto input_strides = input->shape_.strides();
-
-                // Calculate output shape and strides
+                const auto& input_strides = input->strides_;
                 std::vector<size_t> out_shape_vec;
                 for (size_t i = 0; i < input->shape_.rank(); ++i) {
                     if (!is_reduced_dim[i]) {
@@ -1006,10 +1011,8 @@ namespace lfs::core {
                 }
             }
 
-            // Calculate input strides
-            auto input_strides = input->shape_.strides();
+            const auto& input_strides = input->strides_;
 
-            // Calculate output strides
             std::vector<size_t> out_shape_vec;
             for (size_t i = 0; i < input->shape_.rank(); ++i) {
                 if (!is_reduced_dim[i]) {

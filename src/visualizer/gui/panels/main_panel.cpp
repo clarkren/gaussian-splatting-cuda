@@ -367,6 +367,16 @@ namespace lfs::vis::gui::panels {
         if (ImGui::IsItemHovered()) {
             ImGui::SetTooltip("%s", LOC(Tooltip::MIP_FILTER));
         }
+
+        // Render Scale (VRAM optimization)
+        ImGui::Separator();
+        if (widgets::SliderWithReset(LOC(MainPanel::RENDER_SCALE), &settings.render_scale, 0.25f, 1.0f, 1.0f)) {
+            settings_changed = true;
+            render_manager->updateSettings(settings);
+        }
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", LOC(Tooltip::RENDER_SCALE));
+        }
     }
 
     void DrawSelectionGroups(const UIContext& ctx) {

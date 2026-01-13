@@ -385,23 +385,12 @@ namespace lfs::io {
     }
 
     void PipelinedImageLoader::prefetch_thread_func() {
-        static std::atomic<size_t> prefetch_count{0};
-
         while (running_) {
             ImageRequest request;
             try {
                 request = prefetch_queue_.pop();
             } catch (const std::runtime_error&) {
                 break;
-            }
-
-            if (++prefetch_count % 500 == 0) {
-                std::lock_guard<std::mutex> lock(pending_pairs_mutex_);
-                LOG_INFO("[ImageLoader] prefetch={} in_flight={} pending_pairs={} "
-                         "prefetch_q={} hot_q={} cold_q={} output_q={}",
-                         prefetch_count.load(), in_flight_.load(), pending_pairs_.size(),
-                         prefetch_queue_.size(), hot_queue_.size(),
-                         cold_queue_.size(), output_queue_.size());
             }
 
             {
